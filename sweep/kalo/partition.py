@@ -9,6 +9,7 @@
 
 from os import path
 
+import datetime
 import os
 import random
 
@@ -22,7 +23,7 @@ def get_record_list():
     pm_file = open(path.abspath(DATA_DIR) + '/pm25_2009_measured.csv', 'r')
     pm_file.readline()
     for line in pm_file:
-        result.append(line.strip())
+        result.append(line)
     pm_file.close()
     return result
 
@@ -34,8 +35,12 @@ def partition1():
     result_file = open("pm_partition.csv", 'w')
     result_file.write("id,year,month,day,x,y,pm25" + "\n");
     for line in record_list:
-        result_file.write(line + '\n')
+        result_file.write(line)
     result_file.close()
+
+# replace all commas in record_list with tabs, to accomodate Kalo
+for line in record_list:
+    line.replace(',', '\t')
 
 def partition2():
     """ Write the partition in the form required by Kalo's implementation. """
@@ -59,14 +64,40 @@ def partition2():
         value_test.append(open('10FoldCrossValidation/fold' + 
                           str(i) + '/value_test.txt', 'w'))
 
+    def write_line(line, fold_number, sample):
+        """ Helper to process a line and write its data to relevant files. """
+        line = line.strip().split(',')
+        x = line[4]
+        y = line[5]
+        day = datetime.date(int(line[1]),
+                            int(line[2]),
+                            int(line[3])).strftime("%j").lstrip('0')
+        value = line[6]
+        if sample:
+            st_sample[fold_number].write(x + '\t' + y + '\t' + day + '.0\n')
+            value_sample[fold_number].write(value + '\n')
+        else:
+            st_test[fold_number].write(x + '\t' + y + '\t' + day + '.0\n')
+            value_test[fold_number].write(value + '\n')
+
     # write to files
     n = len(record_list) / 10
     r = len(record_list) % 10
     for i in range(10):
         if i < r:
-            # TODO write n + 1 records
+            # count up in increments of n + 1
+            start = i * (n + 1)
+            end = start + (n + 1)
         else:
-            # TODO write n records
+            # count up in increments of n
+            start = r * (n + 1) + (i - r) * n 
+            end = start + n
+        for line in record_list[:start]:
+            write_line(line, i, True)
+        for line in record_list[start:end]:
+            write_line(line, i, False)
+        for line in record_list[end:]:
+            write_line(line, i, True)
 
     # close all file handles
     for i in range(10):
@@ -75,4 +106,6 @@ def partition2():
         value_sample[i].close() 
         value_test[i].close() 
 
+# perform all necessary writes and exit
+partition1()
 partition2()
