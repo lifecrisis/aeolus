@@ -32,7 +32,7 @@ random.shuffle(record_list)
 
 def partition1():
     """ Write the shuffled records directly to a csv file. """
-    result_file = open("pm_partition.csv", 'w')
+    result_file = open("kalo_partition.csv", 'w')
     result_file.write("id,year,month,day,x,y,pm25" + "\n");
     for line in record_list:
         result_file.write(line)
