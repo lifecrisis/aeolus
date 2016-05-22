@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: edu.georgiasouthern.ceit.aeolus.structures.StructureServiceTest
+-------------------------------------------------------------------------------
+Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 2.608 sec - in edu.georgiasouthern.ceit.aeolus.structures.StructureServiceTest

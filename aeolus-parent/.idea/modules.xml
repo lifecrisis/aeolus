@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/aeolus-data/aeolus-data.iml" filepath="$PROJECT_DIR$/aeolus-data/aeolus-data.iml" />
+      <module fileurl="file://$PROJECT_DIR$/aeolus-parent.iml" filepath="$PROJECT_DIR$/aeolus-parent.iml" />
+      <module fileurl="file://$PROJECT_DIR$/aeolus-spark/aeolus-spark.iml" filepath="$PROJECT_DIR$/aeolus-spark/aeolus-spark.iml" />
+    </modules>
+  </component>
+</project>

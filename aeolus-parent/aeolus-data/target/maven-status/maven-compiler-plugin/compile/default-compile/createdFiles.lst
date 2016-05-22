@@ -1,0 +1,10 @@
+edu/georgiasouthern/ceit/aeolus/structures/Point.class
+edu/georgiasouthern/ceit/aeolus/kfold/KFoldConf.class
+edu/georgiasouthern/ceit/aeolus/structures/StructureService.class
+edu/georgiasouthern/ceit/aeolus/structures/PMPoint.class
+edu/georgiasouthern/ceit/aeolus/structures/KDTreeNode.class
+edu/georgiasouthern/ceit/aeolus/structures/NearestNeighborList.class
+edu/georgiasouthern/ceit/aeolus/structures/KDTree$1.class
+edu/georgiasouthern/ceit/aeolus/structures/KDTree.class
+edu/georgiasouthern/ceit/aeolus/kfold/KFoldCalc.class
+edu/georgiasouthern/ceit/aeolus/structures/NearestNeighborList$1.class
