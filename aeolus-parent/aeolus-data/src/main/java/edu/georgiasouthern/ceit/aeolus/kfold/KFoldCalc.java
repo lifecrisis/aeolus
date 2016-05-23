@@ -179,7 +179,7 @@ public class KFoldCalc {
     }
 
     /*
-     * Root Mean Squared Percentage Error
+     * Root Mean Squared Percentage Error statistic.
      */
     public double RMSPE(PMPoint[][] partition, KFoldConf conf) {
 
@@ -224,8 +224,46 @@ public class KFoldCalc {
      * Cross Validation R-squared statistic.
      */
     public double CVR2(PMPoint[][] partition, KFoldConf conf) {
-        // TODO: implement this STUB
-        return 0.0;
+
+        double[] results = new double[conf.getFOLDS()];
+
+        for (int i = 0; i < results.length; i++) {
+
+            // single out validationSet and trainingSet
+            List<PMPoint> validationSet = Arrays.asList(partition[i]);
+            List<PMPoint> trainingSet = new ArrayList<>();
+
+            // join sets into trainingSet, as required
+            for (int j = 0; j < partition.length; j++)
+                if (j != i)
+                    trainingSet.addAll(Arrays.asList(partition[j]));
+
+            // build a KDTree from trainingSet
+            KDTree<PMPoint> kdtree = new KDTree<>(3);
+            kdtree.build(trainingSet);
+
+            // compute result
+            for (PMPoint p : validationSet) {
+                NearestNeighborList<PMPoint> nnl =
+                        kdtree.getNearestNeighbors(conf.getNEIGHBORS(), p);
+                results[i] +=
+                        Math.pow(p.getEstimate(nnl, conf.getPOWER()) - p.get(3), 2.0);
+            }
+            results[i] /= validationSet.size();
+
+            // the code, so far has matched RMSE(); here we don't take the square root,
+            // since we need RMSE^2 for Rcv^2, we simply divide by observedMSE
+            results[i] = results[i] / observedMSE(partition, i);
+
+            // finally, we perform our max operation
+            results[i] = Math.max(0.0, 1 - results[i]);
+        }
+
+        double result = 0.0;
+        for (double r : results) result += r;
+        result /= results.length;
+
+        return result;
     }
 
     /*
