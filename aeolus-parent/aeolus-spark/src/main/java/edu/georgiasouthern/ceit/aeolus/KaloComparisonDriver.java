@@ -66,6 +66,7 @@ public class KaloComparisonDriver {
                 (a, b) -> (a._2() <= b._2() ? a : b));
         result += ("Optimum Result (MAE):\t" +
                 String.format("" + minMAE._1() + " %.7f\t", minMAE._2()) + "\n");
+        maeRDD.unpersist();
 
 
         // ====================> get MSE statistic <====================
@@ -81,6 +82,7 @@ public class KaloComparisonDriver {
                 (a, b) -> (a._2() <= b._2() ? a : b));
         result += ("Optimum Result (MSE):\t" +
                 String.format("" + minMSE._1() + " %.7f\t", minMSE._2()) + "\n");
+        mseRDD.unpersist();
 
 
         // ====================> get RMSE statistic <====================
@@ -96,6 +98,7 @@ public class KaloComparisonDriver {
                 (a, b) -> (a._2() <= b._2() ? a : b));
         result += ("Optimum Result (RMSE):\t" +
                 String.format("" + minRMSE._1() + " %.7f\t", minRMSE._2()) + "\n");
+        rmseRDD.unpersist();
 
 
         // ====================> get MARE statistic <====================
@@ -111,6 +114,25 @@ public class KaloComparisonDriver {
                 (a, b) -> (a._2() <= b._2() ? a : b));
         result += ("Optimum Result (MARE):\t" +
                 String.format("" + minMARE._1() + " %.7f\t", minMARE._2()) + "\n");
+        mareRDD.unpersist();
+
+        // Show result as one block
+        System.out.print(result);
+
+        // ====================> get CVRS statistic <====================
+
+        JavaPairRDD<KFoldConf, Double> cvrsRDD = kFoldConfRDD.mapToPair(
+                c -> new Tuple2<>(c,
+                        new KFoldCalc().CVRS(broadcastPartition.value(), c))
+        );
+        cvrsRDD.cache();
+
+        // find the maximum for all configurations and print the result
+        Tuple2<KFoldConf, Double> maxCVRS = cvrsRDD.reduce(
+                (a, b) -> (a._2() >= b._2() ? a : b));
+        result += ("Optimum Result (CVRS):\t" +
+                String.format("" + maxCVRS._1() + " %.7f\t", maxCVRS._2()) + "\n");
+        cvrsRDD.unpersist();
 
         // Show result as one block
         System.out.print(result);
