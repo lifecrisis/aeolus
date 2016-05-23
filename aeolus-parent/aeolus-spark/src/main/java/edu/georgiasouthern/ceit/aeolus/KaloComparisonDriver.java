@@ -64,8 +64,8 @@ public class KaloComparisonDriver {
         // find the minimum and print the result
         Tuple2<KFoldConf, Double> minMAE = maeRDD.reduce(
                 (a, b) -> (a._2() <= b._2() ? a : b));
-        result += ("Optimum Result (MAE): " +
-                String.format("" + minMAE._1() + " %.7f", minMAE._2()) + "\n");
+        result += ("Optimum Result (MAE):\t" +
+                String.format("" + minMAE._1() + " %.7f\t", minMAE._2()) + "\n");
 
 
         // ====================> get MSE statistic <====================
@@ -79,8 +79,8 @@ public class KaloComparisonDriver {
         // find the minimum and print the result
         Tuple2<KFoldConf, Double> minMSE = mseRDD.reduce(
                 (a, b) -> (a._2() <= b._2() ? a : b));
-        result += ("Optimum Result (MSE): " +
-                String.format("" + minMSE._1() + " %.7f", minMSE._2()) + "\n");
+        result += ("Optimum Result (MSE):\t" +
+                String.format("" + minMSE._1() + " %.7f\t", minMSE._2()) + "\n");
 
 
         // ====================> get RMSE statistic <====================
@@ -94,8 +94,8 @@ public class KaloComparisonDriver {
         // find the minimum and print the result
         Tuple2<KFoldConf, Double> minRMSE = rmseRDD.reduce(
                 (a, b) -> (a._2() <= b._2() ? a : b));
-        result += ("Optimum Result (RMSE): " +
-                String.format("" + minRMSE._1() + " %.7f", minRMSE._2()) + "\n");
+        result += ("Optimum Result (RMSE):\t" +
+                String.format("" + minRMSE._1() + " %.7f\t", minRMSE._2()) + "\n");
 
 
         // ====================> get MARE statistic <====================
@@ -109,8 +109,8 @@ public class KaloComparisonDriver {
         // find the minimum and print the result
         Tuple2<KFoldConf, Double> minMARE = mareRDD.reduce(
                 (a, b) -> (a._2() <= b._2() ? a : b));
-        result += ("Optimum Result (MARE): " +
-                String.format("" + minMARE._1() + " %.7f", minMARE._2()) + "\n");
+        result += ("Optimum Result (MARE):\t" +
+                String.format("" + minMARE._1() + " %.7f\t", minMARE._2()) + "\n");
 
         // Show result as one block
         System.out.print(result);
