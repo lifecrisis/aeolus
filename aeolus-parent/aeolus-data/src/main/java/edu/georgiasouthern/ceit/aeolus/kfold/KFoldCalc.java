@@ -223,7 +223,7 @@ public class KFoldCalc {
     /*
      * Cross Validation R-squared statistic.
      */
-    public double CVR2(PMPoint[][] partition, KFoldConf conf) {
+    public double CVRS(PMPoint[][] partition, KFoldConf conf) {
 
         double[] results = new double[conf.getFOLDS()];
 
