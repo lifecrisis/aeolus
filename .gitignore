@@ -1,2 +1,5 @@
 # ignore Vim .swp files
 *.swp
+
+# IntelliJ IDEA workspace file
+*workspace.xml
