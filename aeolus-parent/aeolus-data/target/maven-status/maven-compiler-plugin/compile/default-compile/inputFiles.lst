@@ -1,8 +1,0 @@
-/home/jf/repositories/intellij_idea_projects/aeolus-parent/aeolus-data/src/main/java/edu/georgiasouthern/ceit/aeolus/structures/Point.java
-/home/jf/repositories/intellij_idea_projects/aeolus-parent/aeolus-data/src/main/java/edu/georgiasouthern/ceit/aeolus/kfold/KFoldConf.java
-/home/jf/repositories/intellij_idea_projects/aeolus-parent/aeolus-data/src/main/java/edu/georgiasouthern/ceit/aeolus/structures/StructureService.java
-/home/jf/repositories/intellij_idea_projects/aeolus-parent/aeolus-data/src/main/java/edu/georgiasouthern/ceit/aeolus/structures/PMPoint.java
-/home/jf/repositories/intellij_idea_projects/aeolus-parent/aeolus-data/src/main/java/edu/georgiasouthern/ceit/aeolus/structures/KDTree.java
-/home/jf/repositories/intellij_idea_projects/aeolus-parent/aeolus-data/src/main/java/edu/georgiasouthern/ceit/aeolus/structures/KDTreeNode.java
-/home/jf/repositories/intellij_idea_projects/aeolus-parent/aeolus-data/src/main/java/edu/georgiasouthern/ceit/aeolus/structures/NearestNeighborList.java
-/home/jf/repositories/intellij_idea_projects/aeolus-parent/aeolus-data/src/main/java/edu/georgiasouthern/ceit/aeolus/kfold/KFoldCalc.java
