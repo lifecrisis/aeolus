@@ -221,22 +221,36 @@ public class KFoldCalc {
     }
 
     /*
-     * Cross Validation R-squared
+     * Cross Validation R-squared statistic.
      */
-//    public double CVR2(PMPoint[][] partition, KFoldConf conf) {
-//        // TODO: verify CVR2() implementation
-//        KFoldCalc calc = new KFoldCalc();
-//        return Math.max(0,
-//                   1 - (Math.pow(calc.RMSE(partition, conf), 2.0) /
-//                           calc.observedMSE(partition))
-//               );
-//    }
+    public double CVR2(PMPoint[][] partition, KFoldConf conf) {
+        // TODO: implement this STUB
+        return 0.0;
+    }
 
     /*
-     * Private helper for CVR2. Returns the MSE for All observed values in the partition.
+     * Private helper for CVR2. Returns the MSE for all observed values in row
+     * "i" of the given partition.
      */
-//    private double observedMSE(PMPoint[][] partition) {
-//        // TODO: verify observedMSE() implementation
-//        return 1.0;
-//    }
+    private double observedMSE(PMPoint[][] partition, int i) {
+
+        // declare and initialize result
+        double result = 0.0;
+
+        // calculate the average of the observed values in row i
+        double mean;
+        double sum = 0.0;
+        for (PMPoint p: partition[i])
+            sum += p.get(3);
+        mean = sum / partition[i].length;
+
+        // use the sum of the squared differences to set result
+        double diffSum = 0.0;
+        for (PMPoint p: partition[i])
+            diffSum += Math.pow(p.get(3) - mean, 2);
+        result = diffSum / partition[i].length;
+
+        // return result
+        return result;
+    }
 }
