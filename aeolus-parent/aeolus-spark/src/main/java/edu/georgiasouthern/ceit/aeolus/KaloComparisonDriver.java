@@ -109,7 +109,11 @@ public class KaloComparisonDriver {
         );
         mareRDD.cache();
 
-        // find the minimum and print the result
+        // print all elements of the
+        System.out.println("MARE Results:");
+        mareRDD.collect().forEach(x -> System.out.println(x._1().toString() + x._2()));
+
+        // find the minimum and add to result
         Tuple2<KFoldConf, Double> minMARE = mareRDD.reduce(
                 (a, b) -> (a._2() <= b._2() ? a : b));
         result += ("Optimum Result (MARE):\t" +
@@ -127,6 +131,11 @@ public class KaloComparisonDriver {
         );
         cvrsRDD.cache();
 
+        // print all elements of the
+        System.out.println("CVRS Results:");
+        cvrsRDD.collect().forEach(x -> System.out.println(x._1().toString() + x._2()));
+
+        // print all elements of the
         // find the maximum for all configurations and print the result
         Tuple2<KFoldConf, Double> maxCVRS = cvrsRDD.reduce(
                 (a, b) -> (a._2() >= b._2() ? a : b));
