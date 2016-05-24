@@ -61,6 +61,10 @@ public class KaloComparisonDriver {
         );
         maeRDD.cache();
 
+        // print all elements of the
+        System.out.println("MAE Results:");
+        maeRDD.collect().forEach(x -> System.out.println(x._1().toString() + x._2()));
+
         // find the minimum and print the result
         Tuple2<KFoldConf, Double> minMAE = maeRDD.reduce(
                 (a, b) -> (a._2() <= b._2() ? a : b));
@@ -77,6 +81,10 @@ public class KaloComparisonDriver {
         );
         mseRDD.cache();
 
+        // print all elements of the
+        System.out.println("MSE Results:");
+        mseRDD.collect().forEach(x -> System.out.println(x._1().toString() + x._2()));
+
         // find the minimum and print the result
         Tuple2<KFoldConf, Double> minMSE = mseRDD.reduce(
                 (a, b) -> (a._2() <= b._2() ? a : b));
@@ -92,6 +100,11 @@ public class KaloComparisonDriver {
                         new KFoldCalc().RMSE(broadcastPartition.value(), c))
         );
         rmseRDD.cache();
+
+        // print all elements of the
+        System.out.println("RMSE Results:");
+        rmseRDD.collect().forEach(x -> System.out.println(x._1().toString() + x._2()));
+
 
         // find the minimum and print the result
         Tuple2<KFoldConf, Double> minRMSE = rmseRDD.reduce(

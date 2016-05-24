@@ -27,7 +27,7 @@ import java.util.List;
 public class PMPoint implements Point, Serializable {
 
     // parameter for scaling the time dimension for uniformity
-    private static final double TIME_SCALE = 0.1086;
+    private static final double TIME_SCALE = 0.1;
 
     // convenience constant for calculating scaledTime
     private static final int[] DAYS = { 31, 28, 31, 30, 31, 30, 
