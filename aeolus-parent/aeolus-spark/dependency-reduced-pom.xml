@@ -23,7 +23,7 @@
             <configuration>
               <transformers>
                 <transformer>
-                  <mainClass>edu.georgiasouthern.ceit.aeolus.KaloComparisonDriver</mainClass>
+                  <mainClass>edu.georgiasouthern.ceit.aeolus.KaloInterpolationDriver</mainClass>
                 </transformer>
               </transformers>
             </configuration>

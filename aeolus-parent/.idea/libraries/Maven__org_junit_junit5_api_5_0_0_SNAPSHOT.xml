@@ -1,13 +1,13 @@
 <component name="libraryTable">
   <library name="Maven: org.junit:junit5-api:5.0.0-SNAPSHOT">
     <CLASSES>
-      <root url="jar://$MAVEN_REPOSITORY$/org/junit/junit5-api/5.0.0-SNAPSHOT/junit5-api-5.0.0-20160522.191959-782.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/junit/junit5-api/5.0.0-SNAPSHOT/junit5-api-5.0.0-20160523.160707-786.jar!/" />
     </CLASSES>
     <JAVADOC>
-      <root url="jar://$MAVEN_REPOSITORY$/org/junit/junit5-api/5.0.0-SNAPSHOT/junit5-api-5.0.0-20160522.191959-782-javadoc.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/junit/junit5-api/5.0.0-SNAPSHOT/junit5-api-5.0.0-20160523.160707-786-javadoc.jar!/" />
     </JAVADOC>
     <SOURCES>
-      <root url="jar://$MAVEN_REPOSITORY$/org/junit/junit5-api/5.0.0-SNAPSHOT/junit5-api-5.0.0-20160522.191959-782-sources.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/junit/junit5-api/5.0.0-SNAPSHOT/junit5-api-5.0.0-20160523.160707-786-sources.jar!/" />
     </SOURCES>
   </library>
 </component>
