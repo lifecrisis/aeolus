@@ -30,7 +30,7 @@ data prior to processing.
 * `data` is the directory containing the datasets under consideration in this
 project.
 
-# Acknowledgements
+## Acknowledgements
 
 I would like to thank Professors Li, Tong, and Zhou of Georgia Southern
 University for the chance to work on this project and support their research
