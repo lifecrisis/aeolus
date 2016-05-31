@@ -57,6 +57,53 @@ public class KFoldCalc {
     }
 
     /*
+    * Mean Absolute Error plus write to standard out.
+    */
+    public double writeAndMAE(PMPoint[][] partition, KFoldConf conf) {
+
+        double[] results = new double[conf.getFOLDS()];
+
+        for (int i = 0; i < results.length; i++) {
+
+            // single out validationSet and trainingSet
+            List<PMPoint> validationSet = Arrays.asList(partition[i]);
+            List<PMPoint> trainingSet = new ArrayList<>();
+
+            // join sets into trainingSet, as required
+            for (int j = 0; j < partition.length; j++)
+                if (j != i)
+                    trainingSet.addAll(Arrays.asList(partition[j]));
+
+            // build a KDTree from trainingSet
+            KDTree<PMPoint> kdtree = new KDTree<>(3);
+            kdtree.build(trainingSet);
+
+            System.out.println("FOLD " + i + "=====================================");
+            // compute result for this validation set
+            for (PMPoint p : validationSet) {
+                NearestNeighborList<PMPoint> nnl =
+                        kdtree.getNearestNeighbors(conf.getNEIGHBORS(), p);
+                double est = p.getEstimate(nnl, conf.getPOWER());
+                results[i] += Math.abs(est - p.get(3));
+                System.out.println(p.get(0) + "\t" +
+                                   p.get(1) + "\t" +
+                                   p.get(2) + "\t" +
+                                   p.get(3) + "\t" + est);
+            }
+            System.out.println("===================================================\n");
+            results[i] /= validationSet.size();
+        }
+
+        // average the results for each set in the partition
+        double result = 0.0;
+        for (double r : results) result += r;
+        result /= results.length;
+
+        // return average
+        return result;
+    }
+
+    /*
      * Mean Absolute Relative Error
      */
     public double MARE(PMPoint[][] partition, KFoldConf conf) {

@@ -193,7 +193,6 @@ public class PMPoint implements Point, Serializable {
      *                  this PMPoint's measurement value
      * @param p the exponent that influences the weight of nearest neighbors
      *          in the interpolation process
-     * @throws IllegalStateException if this PMPoint is not a query point
      */
     public void setEstimate(NearestNeighborList<PMPoint> pointList, double p) {
 
