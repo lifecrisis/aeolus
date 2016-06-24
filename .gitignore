@@ -3,3 +3,6 @@
 
 # IntelliJ IDEA workspace file
 *workspace.xml
+
+# rope completion files
+**/.ropeproject/
