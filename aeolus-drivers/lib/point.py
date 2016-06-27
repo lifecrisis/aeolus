@@ -1,67 +1,103 @@
-"""
-"""
-
 import datetime
+import csv
 import math
+import StringIO
+
+
+class Point:
+
+    def __init__(self, location, value):
+        self.location = location
+        self.value = value
+
+    def distance(self, location):
+        x, y = self.location(), location
+        return math.sqrt(sum([(a - b) ** 2 for a, b in zip(x, y)]))
+
+    def location(self):
+        return self.location
+
+    def value(self):
+        return self.value
 
 
 class PMPoint:
-    """
-    """
 
     def __init__(self, site_id, year, month, day, longitude, latitude, pm25):
+        """ Initialize a new PMPoint object from a decoded CSV record. """
         self.site_id = site_id
         self.date = datetime.datetime(int(year), int(month), int(day))
         self.longitude = float(longitude)
         self.latitude = float(latitude)
         self.pm25 = float(pm25)
 
-    def distance(self, pack):
-        """
-        Return the Euclidean distance between this PMPoint and a "pack".
-
-        Here, "pack" represents an object in the style of that returned by
-        the "pack()" function below.
-        """
-        x = (self.longitude - pack[0]) ** 2
-        y = (self.latitude - pack[1]) ** 2
-        z = (self.scaled_time - pack[2]) ** 2
-        distance = math.sqrt(x + y + z)
+    def distance(self, location):
+        """ Return the Euclidean distance between this PMPoint and location. """
+        x = self.location()
+        y = location
+        distance = math.sqrt(sum([(a - b) ** 2 for a, b in zip(x, y)]))
         return distance
 
-    def interpolate(self, pack_list):
-        """
-        Return the estimate for pm25 at this PMPoint's location.
-
-        Note that "pack_list" represents an iterable of packs returned from
-        a nearest neighbor query.
-        """
+    def interpolate(self, nodes):
         pass
 
-    def pack(self):
-        """
-        Return a compact, but useful, representation of this PMPoint.
-
-        This method returns a tuple of the form (location_tuple, value) that
-        represents the internal state of this PMPoint. Note that location_tuple
-        is itself a tuple giving this PMPoint's spatiotemporal coordinates. We
-        can treat the return value as a node in our kdtree or as a smaller
-        serializable unit.
-        """
-        location_tuple = (self.longitude, self.latitude, self.scaled_time)
-        value = self.pm25
-        return (location_tuple, value)
+    def location(self):
+        """ Return a tuple representing the location of this PMPoint. """
+        return (self.longitude, self.latitude, self.scaled_time)
 
     def scale_time(self, scale, start=None):
         """
-        Compute and set the scaled_time attribute of this PMPoint object.
+        Alter the scale applied to the time dimension of this PMPoint.
 
-        Calculate the length of time in days from the beginning of the
-        experiment's period and multiply that quantity by "scale". The datetime
-        object "start" represents the beginning of the period.
+        Note that this method must be called before anything useful can be
+        done with this PMPoint.
         """
         if start:
             days = (self.date - start).days + 1
         else:
-            days = (self.date - datetime.datetime(self.date.year, 1, 1)) + 1
+            days = (self.date - datetime.datetime(self.date.year, 1, 1)).days + 1
         self.scaled_time = scale * days
+        return self
+
+    def value(self):
+        """ Return the pollution measurement recorded at this location. """
+        return self.pm25
+
+    def __str__(self):
+        """ Return the string representation of this object. """
+        return '< PMPoint -- ' +\
+               str(self.location()) +\
+               ', ' +\
+               str(self.value()) +\
+               '>'
+
+
+def load_pm25_points(rdd):
+    """
+    Return an RDD of PMPoint objects.
+
+    The rdd argument must be an RDD of CSV records representative of PMPoint
+    objects.
+    """
+
+    def load_record(record):
+        """ Parse a single CSV record. """
+        result = StringIO.StringIO(record)
+        fieldnames = ['site_id',
+                      'year',
+                      'month',
+                      'day',
+                      'longitude',
+                      'latitude',
+                      'pm25']
+        reader = csv.DictReader(result, fieldnames)
+        return reader.next()
+
+    header = 'site_id,year,month,day,longitude,latitude,pm25'
+    return rdd.filter(lambda rec: rec != header).\
+        map(load_record).\
+        map(lambda rec: PMPoint(**rec))
+
+
+class QueryPoint:
+    pass
