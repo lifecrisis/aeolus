@@ -38,8 +38,34 @@ class KDTree:
         self.add_all(points[:median], depth + 1)
         self.add_all(points[median + 1:], depth + 1)
 
-    def visualize(self):
-        pass
+    def query(self, point, k=1):
+        """ Return a list of the k KDNode objects nearest to point. """
+
+        def search_node(bpq, curr, depth, point):
+            """ Recursive helper search method. """
+            if curr is None:
+                return
+            bpq.add(curr, point.distance(curr.location))
+            axis = depth % self.dimension
+            if point.location()[axis] < curr.location[axis]:
+                search_node(bpq, curr.left, depth + 1, point)
+                searched = 'LEFT'
+            else:
+                search_node(bpq, curr.right, depth + 1, point)
+                searched = 'RIGHT'
+            diff = abs(curr.location[axis] - point.location()[axis])
+            c1 = len(bpq) < k
+            c2 = diff < bpq.contents[-1][1]
+            if (c1 or c2):
+                if searched == 'LEFT':
+                    search_node(bpq, curr.right, depth + 1, point)
+                else:
+                    search_node(bpq, curr.left, depth + 1, point)
+
+        result = BoundedPriorityQueue(k)
+        search_node(result, self.root, 0, point)
+        result = [x[0] for x in result.contents]
+        return result
 
 
 class KDNode:
@@ -75,3 +101,7 @@ class BoundedPriorityQueue:
                     self.contents.pop()
                     break
                 index += 1
+
+    def __len__(self):
+        """ Return the length of this BoundedPriorityQueue. """
+        return len(self.contents)

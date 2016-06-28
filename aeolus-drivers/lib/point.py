@@ -6,19 +6,19 @@ import StringIO
 
 class Point:
 
-    def __init__(self, location, value):
-        self.location = location
-        self.value = value
+    def __init__(self, location, data):
+        self.location_tuple = location
+        self.data_reference = data
 
     def distance(self, location):
         x, y = self.location(), location
         return math.sqrt(sum([(a - b) ** 2 for a, b in zip(x, y)]))
 
-    def location(self):
-        return self.location
+    def data(self):
+        return self.data_reference
 
-    def value(self):
-        return self.value
+    def location(self):
+        return self.location_tuple
 
 
 class PMPoint:
@@ -38,7 +38,8 @@ class PMPoint:
         distance = math.sqrt(sum([(a - b) ** 2 for a, b in zip(x, y)]))
         return distance
 
-    def interpolate(self, nodes):
+    def interpolate(self, node_list, power):
+        """ Return an estimate of self.pm25 given node_list. """
         pass
 
     def location(self):
