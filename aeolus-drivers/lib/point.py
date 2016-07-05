@@ -38,9 +38,21 @@ class PMPoint:
         distance = math.sqrt(sum([(a - b) ** 2 for a, b in zip(x, y)]))
         return distance
 
-    def interpolate(self, node_list, power):
-        """ Return an estimate of self.pm25 given node_list. """
-        pass
+    def interpolate(self, nodes, p):
+        """ Return an estimate of self.pm25 given nodes list.
+
+        TODO: Ensure that this method returns reasonable results when used
+              with utilities in kfold.py.
+        """
+
+        inv_distances = map(lambda n: (1.0 / self.distance(n.location)) ** p,
+                            nodes)
+        sum_inv_distances = sum(inv_distances)
+
+        lambdas = map(lambda i: i / sum_inv_distances, inv_distances)
+        result = sum(map(lambda l, n: l * n.value, lambdas, nodes))
+
+        return result
 
     def location(self):
         """ Return a tuple representing the location of this PMPoint. """
