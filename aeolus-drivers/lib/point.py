@@ -85,7 +85,7 @@ class PMPoint:
                '>'
 
 
-def load_pm25_points(rdd):
+def load_pm25_rdd(csv_rdd):
     """
     Return an RDD of PMPoint objects.
 
@@ -107,9 +107,35 @@ def load_pm25_points(rdd):
         return reader.next()
 
     header = 'site_id,year,month,day,longitude,latitude,pm25'
-    return rdd.filter(lambda rec: rec != header).\
+    return csv_rdd.filter(lambda rec: rec != header).\
         map(load_record).\
         map(lambda rec: PMPoint(**rec))
+
+
+def load_pm25_file(csv_file):
+    """
+    Return a list of PMPoint objects loaded directly from a CSV file.
+
+    Rather than loading PMPoints from an RDD of CSV records, load them from
+    a file directly.
+    """
+    f = open(csv_file, 'r')
+    next(f)
+
+    def load_record(record):
+        """ Parse a single CSV record. """
+        result = StringIO.StringIO(record)
+        fieldnames = ['site_id',
+                      'year',
+                      'month',
+                      'day',
+                      'longitude',
+                      'latitude',
+                      'pm25']
+        reader = csv.DictReader(result, fieldnames)
+        return reader.next()
+
+    return map(lambda rec: PMPoint(**rec), map(load_record, f))
 
 
 class QueryPoint:
