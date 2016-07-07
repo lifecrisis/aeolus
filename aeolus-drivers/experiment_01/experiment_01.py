@@ -40,7 +40,7 @@ def main():
     conf_list = [kfold.KFoldConf(10, n, p, None, 0.1086) for n in N for p in P]
 
     # Don't forget to slice the data into partitions accordingly.
-    conf_rdd = SC.parallelize(conf_list, 44)
+    conf_rdd = SC.parallelize(conf_list, 45)
     conf_rdd.cache()
 
     # load PMPoint objects from storage, shuffle, and broadcast
