@@ -39,7 +39,8 @@ class KFoldConf:
                 ', radius=' +
                 repr(self.radius) +
                 ', time_scale=' +
-                repr(self.time_scale))
+                repr(self.time_scale) +
+                ')')
 
 
 def mare(conf, point_list_brd):
