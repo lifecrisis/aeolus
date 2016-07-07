@@ -29,6 +29,18 @@ class KFoldConf:
         self.radius = radius
         self.time_scale = time_scale
 
+    def __repr__(self):
+        return ('KFoldConf(folds=' +
+                repr(self.folds) +
+                ', neighbors=' +
+                repr(self.neighbors) +
+                ', power=' +
+                repr(self.power) +
+                ', radius=' +
+                repr(self.radius) +
+                ', time_scale=' +
+                repr(self.time_scale))
+
 
 def mare(conf, point_list_brd):
     """
