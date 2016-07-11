@@ -42,7 +42,6 @@ def main():
 
     point_list = point.load_pm25_file('../../data/pm25_2009_measured.csv')
     random.shuffle(point_list)
-    point_list = point_list[:250]
     point_list_brd = SC.broadcast(point_list)
 
     def fold(conf):
@@ -50,10 +49,13 @@ def main():
                 kfold.mare(conf, point_list_brd),
                 kfold.rmspe(conf, point_list_brd))
     report_rdd = conf_rdd.map(fold).map(report)
+    report_rdd.saveAsTextFile(
+        "hdfs:///user/jf00936/aeolus/experiment_01/results")
 
-    with open('results.txt', 'w') as results_file:
-        results_file.write("neighbors,power,mare,rmspe\n")
-        results_file.writelines(report_rdd.collect())
+#    The following was used to test execution of this script locally.
+#    with open('results.txt', 'w') as results_file:
+#        results_file.write("neighbors,power,mare,rmspe\n")
+#        results_file.writelines(report_rdd.collect())
 
 if __name__ == "__main__":
     main()
