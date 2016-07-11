@@ -7,5 +7,5 @@ spark-submit \
     --name 'Experiment #01' \
     --num-executors 12 \
     --executor-cores 4 \
-    --executor-memory 2G \
+    --executor-memory 5G \
     experiment_01.py;
