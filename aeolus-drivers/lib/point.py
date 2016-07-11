@@ -120,7 +120,7 @@ def load_pm25_file(csv_file):
     a file directly.
     """
     f = open(csv_file, 'r')
-    next(f)
+    next(f)  # advance beyond the header
 
     def load_record(record):
         """ Parse a single CSV record. """
