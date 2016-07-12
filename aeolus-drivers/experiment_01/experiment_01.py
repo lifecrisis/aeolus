@@ -1,7 +1,10 @@
 """
 Experiment #1: Re-implementation of experiment in 2014 Li, et al. paper.
 
-TODO: Enter module docstring here...
+This experiment runs the learning task from the previous research paper
+authored by Li et al. It considers 45 possible K-fold configurations in
+an attempt to learn the parameters leading to the most accurate interpolation
+of our data set.
 """
 
 # standard library import(s)
