@@ -21,17 +21,20 @@ CONF = pyspark.SparkConf().setAppName('Experiment #01')
 SC = pyspark.SparkContext(conf=CONF)
 
 
-def report(record):
+def report(result_record):
     """
     Return a report string (in CSV format) given a record from a result RDD.
 
-    Here, "record" is a three-tuple of the form (KFoldConf, float, float). The
-    last two floats are the MARE and RMSPE results, respectively.
+    Here, "result_record" is a three-tuple of the form:
+
+        (KFoldConf, float, float).
+
+    The last two floats are the MARE and RMSPE results, respectively.
     """
-    return (str(record[0].neighbors) +      # neighbors
-            ',' + str(record[0].power) +    # power
-            ',' + str(record[1]) +          # MARE
-            ',' + str(record[2]) + '\n')    # RMSPE
+    return (str(result_record[0].neighbors) +      # neighbors
+            ',' + str(result_record[0].power) +    # power
+            ',' + str(result_record[1]) +          # MARE
+            ',' + str(result_record[2]) + '\n')    # RMSPE
 
 
 def main():
