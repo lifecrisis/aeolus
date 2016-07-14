@@ -135,7 +135,10 @@ def load_pm25_file(csv_file):
         reader = csv.DictReader(result, fieldnames)
         return reader.next()
 
-    return map(lambda rec: PMPoint(**rec), map(load_record, f))
+    result = map(lambda rec: PMPoint(**rec), map(load_record, f))
+    f.close()
+
+    return result
 
 
 class QueryPoint:
