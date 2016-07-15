@@ -30,7 +30,7 @@ def write_records(filename):
 
 def main():
     """ Application main. """
-    filenames = ['partitions/partition_%02d.csv' % i for i in xrange(20)]
+    filenames = ['partitions/partition_%02d.csv' % i for i in xrange(3)]
     for name in filenames:
         write_records(name)
 

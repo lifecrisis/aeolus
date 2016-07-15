@@ -84,8 +84,15 @@ def report(result_record):
 
 def main():
     """ Application main. """
+
+    # build the list of KFoldConf objects under analysis
+    # 3 partitions
+    # 10 folds
+    # N = [3, 4, 5, 6, 7, 8]
+    # P = [1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5]
+    # C = {0.001: 0.001: 0.025} U {0.025: 0.025: 2}
+
     # STEPS:
-    #   (0) Build KFOLDCONFLIST and create empty RESULTLIST
     #   (1) Set i <- 0
     #   (2) Load partition i csv file
     #   (3) Run all confs in KFOLDCONFLIST in parallel on partition i
