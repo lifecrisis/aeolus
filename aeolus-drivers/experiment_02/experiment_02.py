@@ -79,7 +79,7 @@ def report(result_record):
             ',' + str(result_record[1].power) +         # power
             ',' + str(result_record[1].time_scale) +    # time_scale
             ',' + str(result_record[2]) +               # MARE
-            ',' + str(result_record[3]) + '\n')         # RMSPE
+            ',' + str(result_record[3]))                # RMSPE
 
 
 def main():
@@ -100,18 +100,32 @@ def main():
     # add incremental "conf_id" attribute to each KFoldConf object
     for i, conf in enumerate(conf_list):
         conf.conf_id = i
-    conf_rdd = SC.parallelize(conf_list, 45).cache()
+    conf_rdd = SC.parallelize(conf_list, 150).cache()
 
-    # run learning tasks for each partition in turn
+    # run learning tasks for each partition
     for i in range(3):
-        pass
-    # STEPS:
-    #   (1) Set i <- 0
-    #   (2) Load partition i csv file
-    #   (3) Run all confs in KFOLDCONFLIST in parallel on partition i
-    #   (4) append results to RESULTLIST
-    #   (5) i <- i + 1 and go to (2)
-    #   Finally: Write RESULTLIST as CSV to HDFS
+        point_list = load_partition(i)
+        point_list_brd = SC.broadcast(point_list)
+
+        def fold(conf):
+            """ Return a result tuple for the given configuration. """
+            return (i,                                  # partition_id
+                    conf,                               # KFoldConf object
+                    kfold.mare(conf, point_list_brd),   # MARE statistic
+                    kfold.rmspe(conf, point_list_brd))  # RMSPE statistic
+
+        report_rdd = conf_rdd.map(fold).map(report)
+        report_rdd.saveAsTextFile('results/partition%02d' % i)
+
+    # collect all results into one rdd, then into one file
+    result_rdds = [SC.textFile('results/partition0%d/' % i) for i in range(3)]
+    results = result_rdds[0].\
+        union(result_rdds[1]).\
+        union(result_rdds[2]).\
+        collect()
+    with open('results.csv', 'w') as output:
+        results = map(lambda line: line + '\n', results)
+        output.writelines(results)
 
 if __name__ == "__main__":
     main()
