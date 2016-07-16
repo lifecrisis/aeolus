@@ -5,7 +5,7 @@ Experiment no. 2 runs the learning tasks seen in experiment no. 1 but with
 some important modifications:
     (1) The 'c' (time scale) parameter is allowed to vary (this allows
         us to learn the proper spatiotemportal anistropy paramter).
-    (2) Each conf is run across 20 partitions, and the error stats are
+    (2) Each conf is run across 3 partitions, and the error stats are later
         averaged (this reduces the effect that a unique partition has on
         our error statistic results).
 Like the script from the previous experiment, this script produces a
@@ -18,11 +18,11 @@ import StringIO
 import kfold
 import point
 
-# from pyspark import SparkConf, SparkContext
-#
-#
-# CONF = SparkConf().setAppName('Experiment #02')
-# SC = SparkContext(conf=CONF)
+from pyspark import SparkConf, SparkContext
+
+
+CONF = SparkConf().setAppName('Experiment #02')
+SC = SparkContext(conf=CONF)
 
 
 def load_partition(partition_id):
@@ -85,13 +85,26 @@ def report(result_record):
 def main():
     """ Application main. """
 
-    # build the list of KFoldConf objects under analysis
-    # 3 partitions
-    # 10 folds
-    # N = [3, 4, 5, 6, 7, 8]
-    # P = [1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5]
-    # C = {0.001: 0.001: 0.025} U {0.025: 0.025: 2}
+    K = [10]                                        # folds
+    N = [3, 4, 5, 6, 7, 8]                          # neighbors
+    P = [1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5]         # powers
+    C = [0.001 * i for i in range(1, 25)]           # time_scales
+    C.extend([0.025 * i for i in range(1, 81)])
 
+    # build the list and then RDD of KFoldConf objects under analysis
+    conf_list = [kfold.KFoldConf(k, n, p, None, c)
+                 for k in K
+                 for n in N
+                 for p in P
+                 for c in C]
+    # add incremental "conf_id" attribute to each KFoldConf object
+    for i, conf in enumerate(conf_list):
+        conf.conf_id = i
+    conf_rdd = SC.parallelize(conf_list, 45).cache()
+
+    # run learning tasks for each partition in turn
+    for i in range(3):
+        pass
     # STEPS:
     #   (1) Set i <- 0
     #   (2) Load partition i csv file
@@ -99,8 +112,6 @@ def main():
     #   (4) append results to RESULTLIST
     #   (5) i <- i + 1 and go to (2)
     #   Finally: Write RESULTLIST as CSV to HDFS
-    # TODO: add conf_id to KFoldConf objects in list
-    pass
 
 if __name__ == "__main__":
     main()
