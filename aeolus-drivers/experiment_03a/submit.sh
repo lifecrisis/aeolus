@@ -4,7 +4,7 @@ spark-submit \
     --master 'yarn' \
     --deploy-mode client \
     --py-files exclude.py,kdtree.py,kfold.py,point.py \
-    --num-executors 12 \
+    --num-executors 14 \
     --executor-cores 4 \
     --executor-memory 7G \
     --name 'Experiment #03' \
