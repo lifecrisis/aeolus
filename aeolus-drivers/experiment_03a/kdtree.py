@@ -38,7 +38,7 @@ class KDTree:
         self.add_all(points[:median], depth + 1)
         self.add_all(points[median + 1:], depth + 1)
 
-    def query(self, point, k=1, nodes_only=True):
+    def query(self, point, k=1):
         """ Return a list of the k KDNode objects nearest to point. """
 
         def search_node(bpq, curr, depth, point):
@@ -65,11 +65,7 @@ class KDTree:
         result = BoundedPriorityQueue(k)
         search_node(result, self.root, 0, point)
 
-        if nodes_only:
-            result = [x[0] for x in result.contents]
-        else:
-            result = result.contents
-
+        result = [x[0] for x in result.contents]
         return result
 
 

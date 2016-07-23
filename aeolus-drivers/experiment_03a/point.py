@@ -70,6 +70,8 @@ class PMPoint:
         else:
             days = (self.date - datetime.datetime(self.date.year, 1, 1)).days + 1
         self.scaled_time = scale * days
+        # added to accommodate experiment_03a
+        self.time_scale = scale
         return self
 
     def value(self):

@@ -6,8 +6,16 @@ import os.path
 import random
 import unittest
 
-from context import kdtree
-from context import point
+# absolute imports (i.e. import statements that immediately search sys.path)
+import top.kdtree as kdtree
+import top.point as point
+
+import other.example
+other.example.ex()
+
+import sys
+import pprint
+pprint.pprint(sys.path)
 
 
 class KDTreeModTestCase(unittest.TestCase):
@@ -52,8 +60,3 @@ class KDTreeModTestCase(unittest.TestCase):
     def test_query_nodes_only_false(self):
         """ Doctring. """
         self.fail("unimplemented test")
-
-
-if __name__ == "__main__":
-    suite = unittest.TestLoader().loadTestsFromTestCase(KDTreeModTestCase)
-    unittest.TextTestRunner(verbosity=2).run(suite)
