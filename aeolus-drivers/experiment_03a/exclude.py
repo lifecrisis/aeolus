@@ -39,7 +39,10 @@ def exclude_nodes(node_list, query_point, day_limit, distance_limit):
         # check time difference
         time_diff = abs(x_time - y_time) / query_point.time_scale
         if time_diff > day_limit:
-            result = node_list[:i]
+            if i == 0:
+                result = node_list[:1]
+            else:
+                result = node_list[:i]
             break
 
     return result
