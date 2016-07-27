@@ -1,0 +1,17 @@
+======================================================
+Summary for Experiment #01:
+
+Optimal MARE result:
+    Neighbors : 3
+    Power : 5
+    MARE : 0.387028434547
+    RMSPE : 210.042595606
+
+Optimal RMSPE result:
+    Neighbors : 3
+    Power : 5
+    MARE : 0.387028434547
+    RMSPE : 210.042595606
+
+END PROGRAM
+======================================================
