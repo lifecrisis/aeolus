@@ -1,0 +1,21 @@
+======================================================
+Summary for Experiment #02:
+
+Optimal MARE result:
+    Folds : 10
+    Neighbors : 3
+    Power : 5
+    Time Scale : 0.1
+    MARE : 0.379125825454
+    RMSPE : 152.716050153
+
+Optimal RMSPE result:
+    Folds : 10
+    Neighbors : 8
+    Power : 1
+    Time Scale : 0.007
+    MARE : 0.476038458654
+    RMSPE : 122.207450038
+
+END PROGRAM
+======================================================
