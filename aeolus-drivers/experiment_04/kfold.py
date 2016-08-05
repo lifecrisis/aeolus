@@ -40,7 +40,7 @@ class KFoldConf:
                 ')')
 
 
-def mare(conf, point_list_brd, radius_table_brd):
+def mare(conf, point_list_brd):
     """
     Return the MARE error statistic generated from K-fold cross validation.
 
@@ -73,9 +73,6 @@ def mare(conf, point_list_brd, radius_table_brd):
         # compute result for this validation set
         for p in validation_set:
             nnl = tree.query(p, conf.neighbors)
-            # The modification below was made for experiment #03B
-            distance_limit = radius_table_brd.value[str(p.time_scale)]
-            nnl = exclude.exclude_nodes(nnl, p, distance_limit)
             results[i] += (abs(p.interpolate(nnl, conf.power) - p.value()) /
                            p.value())
         results[i] /= len(validation_set)
@@ -84,7 +81,7 @@ def mare(conf, point_list_brd, radius_table_brd):
     return sum(results) / len(results)
 
 
-def rmspe(conf, point_list_brd, radius_table_brd):
+def rmspe(conf, point_list_brd):
     """
     Return the RMSPE error statistic generated from K-fold cross validation.
 
@@ -117,9 +114,6 @@ def rmspe(conf, point_list_brd, radius_table_brd):
         # compute result for this validation set
         for p in validation_set:
             nnl = tree.query(p, conf.neighbors)
-            # The modification below was made for experiment #03B
-            distance_limit = radius_table_brd.value[str(p.time_scale)]
-            nnl = exclude.exclude_nodes(nnl, p, distance_limit)
             results[i] += ((p.interpolate(nnl, conf.power) - p.value()) /
                            p.value()) ** 2.0
         results[i] /= len(validation_set)
