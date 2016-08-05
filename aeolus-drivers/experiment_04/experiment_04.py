@@ -76,6 +76,8 @@ def report(result_record):
             ',' + str(result_record[1].neighbors) +     # neighbors
             ',' + str(result_record[1].power) +         # power
             ',' + str(result_record[1].time_scale) +    # time_scale
+            ',' + str(result_record[1].alpha) +         # alpha
+            ',' + str(result_record[1].m) +             # m
             ',' + str(result_record[2]) +               # MARE
             ',' + str(result_record[3]))                # RMSPE
 
