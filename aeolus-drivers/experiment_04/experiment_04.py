@@ -11,7 +11,6 @@ Expect a "results.csv" as output.
 """
 
 import csv
-import pickle
 import StringIO
 
 import kfold
@@ -106,11 +105,6 @@ def main():
         conf.conf_id = i
     conf_rdd = SC.parallelize(conf_list, 150).cache()
 
-    # load radius_table and broadcast it
-    with open('radius_table.pkl', 'r') as f:
-        radius_table = pickle.load(f)
-    radius_table_brd = SC.broadcast(radius_table)
-
     # run learning tasks for each partition
     for i in range(3):
         point_list = load_partition(i)
@@ -120,12 +114,8 @@ def main():
             """ Return a result tuple for the given configuration. """
             return (i,                                  # partition_id
                     conf,                               # KFoldConf object
-                    kfold.mare(conf,                    # MARE statistic
-                               point_list_brd,
-                               radius_table_brd),   
-                    kfold.rmspe(conf,                   # RMSPE statistic
-                                point_list_brd,
-                                radius_table_brd))  
+                    kfold.mare(conf, point_list_brd),   # MARE statistic
+                    kfold.rmspe(conf, point_list_brd))  # RMSPE statistic
 
         report_rdd = conf_rdd.map(fold).map(report)
         report_rdd.saveAsTextFile('results/partition%02d' % i)
