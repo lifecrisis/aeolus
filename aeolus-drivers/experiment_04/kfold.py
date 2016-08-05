@@ -26,6 +26,10 @@ class KFoldConf:
         self.power = power
         self.radius = radius
         self.time_scale = time_scale
+        # alpha value from bagging
+        self.alpha = alpha
+        # m value from bagging
+        self.m = m
 
     def __repr__(self):
         return ('KFoldConf(folds=' +
