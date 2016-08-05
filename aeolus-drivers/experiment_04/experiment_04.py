@@ -110,7 +110,6 @@ def main():
     # run learning tasks for each partition
     for i in range(3):
         point_list = load_partition(i)
-        point_list = point_list[:40]
         point_list_brd = SC.broadcast(point_list)
 
         def fold(conf):

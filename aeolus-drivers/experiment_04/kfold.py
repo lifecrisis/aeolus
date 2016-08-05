@@ -94,6 +94,7 @@ def mare(conf, point_list_brd):
         bags = [sample_with_replacement(training_set, n_prime)
                 for i in range(conf.m)]
 
+        # TODO(jf): build 3 kdtrees, one for each bag (issue_number)
         # for each bag, compute bag_result
         for bag in bags:
 
@@ -104,6 +105,7 @@ def mare(conf, point_list_brd):
             bag_result = 0.0
             for p in validation_set:
                 nnl = tree.query(p, conf.neighbors)
+                # TODO(jf): average interpolation values... not error statistics!!! (issue_number)
                 bag_result += (abs(p.interpolate(nnl, conf.power) - p.value()) /
                                p.value())
             bag_result /= len(validation_set)
