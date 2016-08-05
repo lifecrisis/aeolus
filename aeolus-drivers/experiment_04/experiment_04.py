@@ -19,7 +19,7 @@ import point
 from pyspark import SparkConf, SparkContext
 
 
-CONF = SparkConf().setAppName('Experiment #03b')
+CONF = SparkConf()
 SC = SparkContext(conf=CONF)
 
 
