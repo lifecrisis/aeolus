@@ -12,6 +12,7 @@ technique.
 
 import copy
 import math
+import random
 
 import exclude
 import kdtree
@@ -45,7 +46,13 @@ def sample_with_replacement(population, n):
     Return a list of size n sampled randomly (with replacement) from
     iterable.
     """
-    pass
+    n = len(population)
+    _random, _int = random.random, int  # speed hack 
+    result = [None] * k
+    for i in xrange(k):
+        j = _int(_random() * n)
+        result[i] = population[j]
+    return result
 
 
 def mare(conf, point_list_brd):
