@@ -14,7 +14,6 @@ import copy
 import math
 import random
 
-import exclude
 import kdtree
 
 
