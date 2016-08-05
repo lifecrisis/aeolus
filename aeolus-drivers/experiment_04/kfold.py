@@ -2,8 +2,8 @@
 Run MARE and RMSPE based learning functions.
 
 Modified for experiment #4. Bagging is used here with the following settings:
-    1. 3 "bags", each 80% of the training set, results averaged
-    2. 3 "bags", each 40% of the training set, results averaged
+    1. 3 "bags", each 75% of the training set, results averaged
+    2. 3 "bags", each 50% of the training set, results averaged
 These settings may (in fact, probably) will lead to a significantly increased
 runtime on our Spark cluster, but it is worth it in order to establish a
 baseline expectation for accuracy decreases in future projects that use this
