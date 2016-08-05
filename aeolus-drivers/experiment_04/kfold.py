@@ -20,7 +20,7 @@ import kdtree
 
 class KFoldConf:
 
-    def __init__(self, folds, neighbors, power, radius, time_scale):
+    def __init__(self, folds, neighbors, power, radius, time_scale, alpha, bags):
         self.folds = folds
         self.neighbors = neighbors
         self.power = power
@@ -29,7 +29,7 @@ class KFoldConf:
         # alpha value from bagging
         self.alpha = alpha
         # m value from bagging
-        self.m = m
+        self.m = bags
 
     def __repr__(self):
         return ('KFoldConf(folds=' +
