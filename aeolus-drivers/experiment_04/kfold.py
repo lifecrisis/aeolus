@@ -44,9 +44,9 @@ class KFoldConf:
                 ')')
 
 
-def sample_with_replacement(population, n):
+def sample_with_replacement(population, k):
     """
-    Return a list of size n sampled randomly (with replacement) from
+    Return a list of size k sampled randomly (with replacement) from
     iterable.
     """
     n = len(population)
