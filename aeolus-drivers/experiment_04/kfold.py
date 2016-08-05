@@ -75,23 +75,39 @@ def mare(conf, point_list_brd):
     for i, p in enumerate(points):
         partition[i % conf.folds].append(p)
 
-    # TODO(jf): Run this loop for conf.m and conf.alpha. (iss3)
+    # generate results for kfold cross validation with this err stat
     results = [0.0 for i in range(conf.folds)]
     for i in range(conf.folds):
+
         # initialize validation set and training set
         validation_set = partition[i]
         training_set = list()
         for j in range(conf.folds):
             if j != i:
                 training_set += partition[j]
-        # build a kdtree from the training set
-        tree = kdtree.KDTree(training_set)
-        # compute result for this validation set
-        for p in validation_set:
-            nnl = tree.query(p, conf.neighbors)
-            results[i] += (abs(p.interpolate(nnl, conf.power) - p.value()) /
-                           p.value())
-        results[i] /= len(validation_set)
+
+        # generate conf.m bags at conf.alpha by sampling with replacement
+        n_prime = int(len(training_set) * conf.alpha)
+        bags = [sample_with_replacement(training_set, n_prime)
+                for i in range(conf.m)]
+
+        # for each bag, compute bag_result
+        for bag in bags:
+
+            # build a KDTree from the bag
+            tree = kdtree.KDTree(bag)
+
+            # compute result for the validation set
+            bag_result = 0.0
+            for p in validation_set:
+                nnl = tree.query(p, conf.neighbors)
+                bag_result += (abs(p.interpolate(nnl, conf.power) - p.value()) /
+                               p.value())
+            bag_result /= len(validation_set)
+            results[i] += bag_result
+
+        # average results[i] across conf.m (i.e. number of bags)
+        results[i] /= conf.m
 
     # return the average of the elements in the results vector
     return sum(results) / len(results)
@@ -117,24 +133,40 @@ def rmspe(conf, point_list_brd):
     for i, p in enumerate(points):
         partition[i % conf.folds].append(p)
 
-    # TODO(jf): Run this loop for conf.m and conf.alpha. (iss3)
+    # generate results for kfold cross validation with this err stat
     results = [0.0 for i in range(conf.folds)]
     for i in range(conf.folds):
+
         # initialize validation set and training set
         validation_set = partition[i]
         training_set = list()
         for j in range(conf.folds):
             if j != i:
                 training_set += partition[j]
-        # build a kdtree from the training set
-        tree = kdtree.KDTree(training_set)
-        # compute result for this validation set
-        for p in validation_set:
-            nnl = tree.query(p, conf.neighbors)
-            results[i] += ((p.interpolate(nnl, conf.power) - p.value()) /
-                           p.value()) ** 2.0
-        results[i] /= len(validation_set)
-        results[i] = math.sqrt(results[i]) * 100
+
+        # generate conf.m bags at conf.alpha by sampling with replacement
+        n_prime = int(len(training_set) * conf.alpha)
+        bags = [sample_with_replacement(training_set, n_prime)
+                for i in range(conf.m)]
+
+        # for each bag, compute bag_result
+        for bag in bags:
+
+            # build a KDTree from the bag
+            tree = kdtree.KDTree(bag)
+
+            # compute result for this validation set
+            bag_result = 0.0
+            for p in validation_set:
+                nnl = tree.query(p, conf.neighbors)
+                bag_result += ((p.interpolate(nnl, conf.power) - p.value()) /
+                               p.value()) ** 2.0
+            bag_result /= len(validation_set)
+            bag_result = math.sqrt(bag_result) * 100
+            results[i] += bag_result
+
+        # average results[i] across conf.m (i.e. number of bags)
+        results[i] /= conf.m
 
     # return the average of the elements in the results vector
     return sum(results) / len(results)
