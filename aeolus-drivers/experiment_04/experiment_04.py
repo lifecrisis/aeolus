@@ -89,13 +89,18 @@ def main():
     P = [1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5]         # powers
     C = [0.001 * i for i in range(1, 25)]           # time_scales
     C.extend([0.025 * i for i in range(1, 81)])
+    A = [0.50, 0.75]                                # alphas
+    M = [3]                                         # bags
 
     # build the list and then RDD of KFoldConf objects under analysis
-    conf_list = [kfold.KFoldConf(k, n, p, None, c)
+    conf_list = [kfold.KFoldConf(k, n, p, None, c, a, m)
                  for k in K
                  for n in N
                  for p in P
-                 for c in C]
+                 for c in C
+                 for a in A
+                 for m in M]
+
     # add incremental "conf_id" attribute to each KFoldConf object
     for i, conf in enumerate(conf_list):
         conf.conf_id = i
