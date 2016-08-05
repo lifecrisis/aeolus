@@ -40,6 +40,14 @@ class KFoldConf:
                 ')')
 
 
+def sample_with_replacement(iterable, n):
+    """
+    Return a list of size n sampled randomly (with replacement) from
+    iterable.
+    """
+    pass
+
+
 def mare(conf, point_list_brd):
     """
     Return the MARE error statistic generated from K-fold cross validation.
@@ -60,6 +68,7 @@ def mare(conf, point_list_brd):
     for i, p in enumerate(points):
         partition[i % conf.folds].append(p)
 
+    # TODO(jf): Run this loop for conf.m and conf.alpha. (iss3)
     results = [0.0 for i in range(conf.folds)]
     for i in range(conf.folds):
         # initialize validation set and training set
@@ -101,6 +110,7 @@ def rmspe(conf, point_list_brd):
     for i, p in enumerate(points):
         partition[i % conf.folds].append(p)
 
+    # TODO(jf): Run this loop for conf.m and conf.alpha. (iss3)
     results = [0.0 for i in range(conf.folds)]
     for i in range(conf.folds):
         # initialize validation set and training set
