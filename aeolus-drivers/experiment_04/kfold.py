@@ -40,7 +40,7 @@ class KFoldConf:
                 ')')
 
 
-def sample_with_replacement(iterable, n):
+def sample_with_replacement(population, n):
     """
     Return a list of size n sampled randomly (with replacement) from
     iterable.
