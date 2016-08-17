@@ -79,7 +79,7 @@ def mare(conf, point_list_brd):
         partition[i % conf.folds].append(p)
 
     # generate results for kfold cross validation with this err stat
-    results = [0.0 for i in range(conf.folds)]
+    results = [0.0] * range(conf.folds)
     for i in range(conf.folds):
 
         # initialize validation set and training set
@@ -89,30 +89,23 @@ def mare(conf, point_list_brd):
             if j != i:
                 training_set += partition[j]
 
-        # generate conf.m bags at conf.alpha by sampling with replacement
+        # generate conf.m bags and trees at conf.alpha by sampling with
+        # replacement
         n_prime = int(len(training_set) * conf.alpha)
         bags = [sample_with_replacement(training_set, n_prime)
                 for i in range(conf.m)]
+        trees = [kdtree.KDTree(bag) for bag in bags]
 
-        # TODO(jf): build 3 kdtrees, one for each bag (issue_number)
-        # for each bag, compute bag_result
-        for bag in bags:
-
-            # build a KDTree from the bag
-            tree = kdtree.KDTree(bag)
-
-            # compute result for the validation set
-            bag_result = 0.0
-            for p in validation_set:
+        for p in validation_set:
+            # compute the average estimate for pollution at p over bags
+            avg_estimate = 0.0
+            for tree in trees:
                 nnl = tree.query(p, conf.neighbors)
-                # TODO(jf): average interpolation values... not error statistics!!! (issue_number)
-                bag_result += (abs(p.interpolate(nnl, conf.power) - p.value()) /
-                               p.value())
-            bag_result /= len(validation_set)
-            results[i] += bag_result
-
-        # average results[i] across conf.m (i.e. number of bags)
-        results[i] /= conf.m
+                avg_estimate += p.interpolate(nnl, conf.power)
+            avg_estimate /= len(bags)
+            # incorporate this information into the results vector
+            results[i] += (abs(avg_estimate - p.value()) / p.value())
+        results[i] /= len(validation_set)
 
     # return the average of the elements in the results vector
     return sum(results) / len(results)
@@ -153,25 +146,20 @@ def rmspe(conf, point_list_brd):
         n_prime = int(len(training_set) * conf.alpha)
         bags = [sample_with_replacement(training_set, n_prime)
                 for i in range(conf.m)]
+        trees = [kdtree.KDTree(bag) for bag in bags]
 
-        # for each bag, compute bag_result
-        for bag in bags:
-
-            # build a KDTree from the bag
-            tree = kdtree.KDTree(bag)
-
-            # compute result for this validation set
-            bag_result = 0.0
-            for p in validation_set:
-                nnl = tree.query(p, conf.neighbors)
-                bag_result += ((p.interpolate(nnl, conf.power) - p.value()) /
-                               p.value()) ** 2.0
-            bag_result /= len(validation_set)
-            bag_result = math.sqrt(bag_result) * 100
-            results[i] += bag_result
-
-        # average results[i] across conf.m (i.e. number of bags)
-        results[i] /= conf.m
+        for point in validation_set:
+            # compute the average estimate for pollution at point over bags
+            avg_estimate = 0.0
+            for tree in trees:
+                nnl = tree.query(point, conf.neighbors)
+                avg_estimate += point.interpolate(nnl, conf.power)
+            avg_estimate /= len(bags)
+            # incorporate this information into the results vector
+            results[i] += ((avg_estimate - point.value()) /
+                           point.value()) ** 2.0
+        results[i] /= len(validation_set)
+        results[i] = math.sqrt(results[i]) * 100
 
     # return the average of the elements in the results vector
     return sum(results) / len(results)
