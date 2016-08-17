@@ -6,8 +6,8 @@ Modified for experiment #4. Bagging is used here with the following settings:
     2. 3 "bags", each 50% of the training set, results averaged
 These settings may (in fact, probably) will lead to a significantly increased
 runtime on our Spark cluster, but it is worth it in order to establish a
-baseline expectation for accuracy decreases in future projects that use this
-technique.
+baseline expectation for accuracy increases/decreases in future projects that
+use this technique.
 """
 
 import copy
@@ -79,7 +79,7 @@ def mare(conf, point_list_brd):
         partition[i % conf.folds].append(p)
 
     # generate results for kfold cross validation with this err stat
-    results = [0.0] * range(conf.folds)
+    results = [0.0] * conf.folds
     for i in range(conf.folds):
 
         # initialize validation set and training set
@@ -87,7 +87,7 @@ def mare(conf, point_list_brd):
         training_set = list()
         for j in range(conf.folds):
             if j != i:
-                training_set += partition[j]
+                training_set.extend(partition[j])
 
         # generate conf.m bags and trees at conf.alpha by sampling with
         # replacement
@@ -102,7 +102,7 @@ def mare(conf, point_list_brd):
             for tree in trees:
                 nnl = tree.query(p, conf.neighbors)
                 avg_estimate += p.interpolate(nnl, conf.power)
-            avg_estimate /= len(bags)
+            avg_estimate /= conf.m
             # incorporate this information into the results vector
             results[i] += (abs(avg_estimate - p.value()) / p.value())
         results[i] /= len(validation_set)
@@ -132,15 +132,15 @@ def rmspe(conf, point_list_brd):
         partition[i % conf.folds].append(p)
 
     # generate results for kfold cross validation with this err stat
-    results = [0.0 for i in range(conf.folds)]
+    results = [0.0] * conf.folds
     for i in range(conf.folds):
 
-        # initialize validation set and training set
+        # initialize validation_set and training_set
         validation_set = partition[i]
         training_set = list()
         for j in range(conf.folds):
             if j != i:
-                training_set += partition[j]
+                training_set.extend(partition[j])
 
         # generate conf.m bags at conf.alpha by sampling with replacement
         n_prime = int(len(training_set) * conf.alpha)
@@ -154,7 +154,7 @@ def rmspe(conf, point_list_brd):
             for tree in trees:
                 nnl = tree.query(point, conf.neighbors)
                 avg_estimate += point.interpolate(nnl, conf.power)
-            avg_estimate /= len(bags)
+            avg_estimate /= conf.m
             # incorporate this information into the results vector
             results[i] += ((avg_estimate - point.value()) /
                            point.value()) ** 2.0
