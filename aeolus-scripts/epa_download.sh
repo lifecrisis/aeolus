@@ -1,7 +1,8 @@
 #! /bin/bash
 #
 # This script downloads and unpacks data required for our analysis prior
-# to visiting the CDC. The site hosting the data can be found at...
+# to visiting the CDC. The site hosting the data can be found at the
+# following URI...
 #
 # http://aqsdr1.epa.gov/aqsweb/aqstmp/airdata/download_files.html
 #
