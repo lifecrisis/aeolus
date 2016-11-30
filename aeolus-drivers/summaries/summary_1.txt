@@ -1,11 +1,14 @@
-======================================================
+==============================================================================
 Summary for Experiment #01:
 
 The configurations under consideration in this
 experiment were limited to the following:
 
+    K = [10]
     N = [3, 4, 5, 6, 7]
     P = [1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5]
+
+Only one partition for k-fold cross validation was used.
 
 Optimal MARE result:
     Neighbors : 3
@@ -20,4 +23,4 @@ Optimal RMSPE result:
     RMSPE : 210.042595606
 
 END
-======================================================
+==============================================================================

@@ -1,5 +1,5 @@
 """
-Generate 20 distinct partitions over which to average k-fold results.
+Generate distinct partitions over which to average k-fold results.
 
 This module generates 20 distinct partitions of our dataset. By "partition",
 we mean a shuffled, headerless CSV files derived from pm25_2009_measured.csv).

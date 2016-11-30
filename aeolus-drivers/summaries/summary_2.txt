@@ -1,5 +1,6 @@
-======================================================
+==============================================================================
 Summary for Experiment #02:
+
 
 The configurations under consideration in this
 experiment were limited to the following:
@@ -9,6 +10,9 @@ experiment were limited to the following:
     P = [1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5]
     C = [0.001 * i for i in range(1, 25)]
     C.extend([0.025 * i for i in range(1, 81)])
+
+The results were averaged over three random partitions for k-fold
+cross validation.
 
 Optimal MARE result:
     Folds : 10
@@ -27,4 +31,4 @@ Optimal RMSPE result:
     RMSPE : 122.207450038
 
 END
-======================================================
+==============================================================================
